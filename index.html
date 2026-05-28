@@ -2,51 +2,122 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acceso Privado</title>
     <style>
-        body { background: #000; color: white; font-family: sans-serif; margin: 0; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        #login { text-align: center; background: #222; padding: 40px; border-radius: 20px; box-shadow: 0 0 20px rgba(255,255,255,0.1); }
-        input { padding: 12px; border-radius: 8px; border: none; width: 200px; margin-bottom: 15px; font-size: 18px; text-align: center; }
-        button { padding: 12px 25px; background: #28a745; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        
-        #contenedor-juego { display: none; width: 100vw; height: 100vh; overflow: hidden; position: relative; }
+        /* Fondo negro y centrado */
+        body { 
+            background: #000; 
+            color: white; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            overflow: hidden; 
+        }
+
+        /* Caja de login */
+        #login { 
+            text-align: center; 
+            background: #1e1e1e; 
+            padding: 50px; 
+            border-radius: 15px; 
+            box-shadow: 0 0 30px rgba(255,255,255,0.05);
+            max-width: 400px;
+        }
+
+        h2 { margin-bottom: 20px; font-weight: 300; letter-spacing: 1px; }
+
+        input { 
+            padding: 15px; 
+            border-radius: 10px; 
+            border: 1px solid #444; 
+            width: 80%; 
+            background: #111;
+            color: white;
+            font-size: 18px; 
+            text-align: center; 
+            margin-bottom: 20px;
+            outline: none;
+        }
+
+        button { 
+            padding: 12px 30px; 
+            background: #28a745; 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        button:hover { background: #218838; }
+
+        /* Contenedor del Juego (Recorte de Logo) */
+        #contenedor-juego { 
+            display: none; 
+            width: 100vw; 
+            height: 100vh; 
+            overflow: hidden; 
+            position: relative; 
+        }
+
         iframe { 
-            width: 100%; height: calc(100% + 150px); 
+            width: 100%; 
+            height: calc(100% + 150px); /* Altura extra para permitir el desplazamiento */
             position: absolute; 
-            top: -110px; /* Ajusta este número para tapar el logo de Blumgi */
-            left: 0; border: none; 
+            top: -115px; /* <--- ESTE NÚMERO TAPA EL LOGO. Ajusta si es necesario */
+            left: 0; 
+            border: none; 
         }
     </style>
 </head>
 <body>
 
+    <!-- Pantalla de Código -->
     <div id="login">
-        <h2>Acceso Restringido</h2>
-        <input type="password" id="pass" placeholder="Código de entrada">
+        <h2>Identificación</h2>
+        <input type="password" id="pass" placeholder="Introducir PIN">
         <br>
-        <button onclick="acceder()">ENTRAR</button>
+        <button onclick="acceder()">CONTINUAR</button>
     </div>
 
+    <!-- Espacio del Juego -->
     <div id="contenedor-juego">
         <iframe src="https://tinyfishingame.com"></iframe>
     </div>
 
     <script>
         function acceder() {
-            // PON AQUÍ TUS CÓDIGOS
-            var codigosValidos = ["SAM55", "SER", "SOS"]; 
+            // 1. TUS CÓDIGOS (Cámbialos o añade más aquí)
+            var codigosValidos = ["SAM55", "SER", "SOS", "MOIN"]; 
+            
+            // 2. PÁGINAS A LAS QUE MANDA SI FALLAN (Al azar)
+            var websFalsas = [
+                "https://webuntis.com",
+                "https://office.com",
+                "https://google.com",
+                "https://conversaition.onrender.com",
+                "https://wikipedia.org" // Wiki aleatoria para despistar
+            ];
+
             var input = document.getElementById("pass").value;
 
             if (codigosValidos.includes(input)) {
+                // SI ACIERTA: Muestra el juego
                 document.getElementById("login").style.display = "none";
                 document.getElementById("contenedor-juego").style.display = "block";
             } else {
-                // Si falla, lo manda a WebUntis
-                window.location.href = "https://webuntis.com";
+                // SI FALLA: Lo manda a una web aburrida al azar
+                var azar = Math.floor(Math.random() * websFalsas.length);
+                window.location.href = websFalsas[azar];
             }
         }
 
-        // Permite entrar también pulsando la tecla Enter
+        // Permite entrar pulsando la tecla "Enter"
         document.getElementById("pass").addEventListener("keypress", function(event) {
             if (event.key === "Enter") {
                 acceder();
