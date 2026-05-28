@@ -1,26 +1,25 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Mi App Privada</title>
+    <meta charset="UTF-8">
+    <title>Acceso Privado</title>
     <style>
-        body { background: #000; color: white; font-family: sans-serif; text-align: center; margin: 0; height: 100vh; display: flex; align-items: center; justify-content: center; }
-        #login { background: #222; padding: 40px; border-radius: 20px; box-shadow: 0 0 20px rgba(0,255,0,0.2); }
-        input { padding: 12px; border-radius: 8px; border: none; width: 200px; margin-bottom: 10px; font-size: 18px; text-align: center; }
+        body { background: #000; color: white; font-family: sans-serif; margin: 0; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        #login { text-align: center; background: #222; padding: 40px; border-radius: 20px; box-shadow: 0 0 20px rgba(255,255,255,0.1); }
+        input { padding: 12px; border-radius: 8px; border: none; width: 200px; margin-bottom: 15px; font-size: 18px; text-align: center; }
         button { padding: 12px 25px; background: #28a745; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
         
-        /* ESTO RECORTA EL LOGO */
-        #contenedor-juego { 
-            display: none; width: 100vw; height: 100vh; overflow: hidden; position: relative; 
-        }
+        #contenedor-juego { display: none; width: 100vw; height: 100vh; overflow: hidden; position: relative; }
         iframe { 
-            width: 100%; height: calc(100% + 150px); /* Le damos más altura para poder subirlo */
+            width: 100%; height: calc(100% + 150px); 
             position: absolute; 
-            top: -100px; /* ESTE NÚMERO SUBE EL JUEGO Y TAPA EL LOGO */
+            top: -110px; /* Ajusta este número para tapar el logo de Blumgi */
             left: 0; border: none; 
         }
     </style>
 </head>
 <body>
+
     <div id="login">
         <h2>Acceso Restringido</h2>
         <input type="password" id="pass" placeholder="Código de entrada">
@@ -29,25 +28,30 @@
     </div>
 
     <div id="contenedor-juego">
-        <iframe src="https://tinyfishingame.com/blumgi-ball/"></iframe>
+        <iframe src="https://tinyfishingame.com"></iframe>
     </div>
 
     <script>
         function acceder() {
-    // Tus códigos autorizados
-    var codigosValidos = ["SAM55", "SER", "SOS"]; 
-    
-    var input = document.getElementById("pass").value;
+            // PON AQUÍ TUS CÓDIGOS
+            var codigosValidos = ["SAM55", "SER", "SOS"]; 
+            var input = document.getElementById("pass").value;
 
-    if (codigosValidos.includes(input)) {
-        // Si el código es correcto, entra al juego
-        document.getElementById("login").style.display = "none";
-        document.getElementById("contenedor-juego").style.display = "block";
-    } else {
-        // Si el código es INCORRECTO, lo manda a WebUntis
-        window.location.href = "https://webuntis.com"; 
-    }
-}
-</script>
+            if (codigosValidos.includes(input)) {
+                document.getElementById("login").style.display = "none";
+                document.getElementById("contenedor-juego").style.display = "block";
+            } else {
+                // Si falla, lo manda a WebUntis
+                window.location.href = "https://webuntis.com";
+            }
+        }
+
+        // Permite entrar también pulsando la tecla Enter
+        document.getElementById("pass").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                acceder();
+            }
+        });
+    </script>
 </body>
 </html>
