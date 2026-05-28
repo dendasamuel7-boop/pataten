@@ -34,16 +34,20 @@
 
     <script>
         function acceder() {
-            var codigoSecreto = "SAM55"; // <--- CAMBIA ESTO POR TU CÓDIGO
-            var input = document.getElementById("pass").value;
-            if (input === codigoSecreto) {
-                document.getElementById("login").style.display = "none";
-                document.getElementById("contenedor-juego").style.display = "block";
-                document.body.style.display = "block";
-            } else {
-                alert("Código incorrecto");
-            }
-        }
-    </script>
+    // Tus códigos autorizados
+    var codigosValidos = ["SAM55", "SER", "SOS"]; 
+    
+    var input = document.getElementById("pass").value;
+
+    if (codigosValidos.includes(input)) {
+        // Si el código es correcto, entra al juego
+        document.getElementById("login").style.display = "none";
+        document.getElementById("contenedor-juego").style.display = "block";
+    } else {
+        // Si el código es INCORRECTO, lo manda a WebUntis
+        window.location.href = "https://webuntis.com"; 
+    }
+}
+</script>
 </body>
 </html>
