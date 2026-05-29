@@ -64,28 +64,30 @@
             border: none; 
         }
 
-        /* BOTÓN DE SALIDA RÁPIDA */
+        /* BOTÓN DE SALIDA GIGANTE */
         #btn-exit {
             position: fixed;
-            top: 10px;
-            right: 10px;
-            z-index: 9999; /* Para que esté siempre encima de todo */
-            padding: 8px 15px;
-            background: rgba(255, 0, 0, 0.5); /* Rojo semitransparente para que no llame mucho la atención */
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            padding: 25px 50px; 
+            background: #ff0000; 
             color: white;
-            border: none;
-            border-radius: 5px;
+            border: 3px solid white;
+            border-radius: 15px;
             cursor: pointer;
-            font-size: 12px;
-            display: none; /* Solo se verá cuando entres al juego */
+            font-size: 24px; 
+            font-weight: bold;
+            display: none; 
+            box-shadow: 0 0 20px rgba(255,0,0,0.5);
         }
-        #btn-exit:hover { background: red; }
+        #btn-exit:hover { background: #cc0000; transform: scale(1.1); }
     </style>
 </head>
 <body>
 
-    <!-- Botón de pánico -->
-    <button id="btn-exit" onclick="salirRapido()">EXIT</button>
+    <!-- Botón de pánico GIGANTE -->
+    <button id="btn-exit" onclick="salirRapido()">SALIR RÁPIDO (Q / ESC)</button>
 
     <div id="login">
         <h2>Identificación</h2>
@@ -99,7 +101,6 @@
     </div>
 
     <script>
-        // Lista de webs para despistar
         var websFalsas = [
             "https://webuntis.com",
             "https://office.com",
@@ -113,20 +114,30 @@
             if (codigosValidos.includes(input)) {
                 document.getElementById("login").style.display = "none";
                 document.getElementById("contenedor-juego").style.display = "block";
-                document.getElementById("btn-exit").style.display = "block"; // Mostrar botón EXIT
+                document.getElementById("btn-exit").style.display = "block"; 
             } else {
-                window.location.href = websFalsas[0]; // Manda a WebUntis si falla
+                window.location.href = "https://webuntis.com";
             }
         }
 
         function salirRapido() {
-            // Elige una web al azar de la lista y te manda allí inmediatamente
             var azar = Math.floor(Math.random() * websFalsas.length);
             window.location.href = websFalsas[azar];
         }
 
-        document.getElementById("pass").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") { acceder(); }
+        // Atajos de teclado: Enter para entrar, "Q" o "Esc" para salir
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                if(document.getElementById("login").style.display !== "none") {
+                    acceder();
+                }
+            }
+            // Detecta la tecla Q o la tecla Escape (Esc)
+            if (event.key.toLowerCase() === "q" || event.key === "Escape") {
+                if(document.getElementById("contenedor-juego").style.display === "block") {
+                    salirRapido();
+                }
+            }
         });
     </script>
 </body>
