@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acceso Privado</title>
     <style>
-        /* Fondo negro y centrado */
         body { 
             background: #000; 
             color: white; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            font-family: sans-serif; 
             margin: 0; 
             height: 100vh; 
             display: flex; 
@@ -18,17 +17,13 @@
             overflow: hidden; 
         }
 
-        /* Caja de login */
         #login { 
             text-align: center; 
             background: #1e1e1e; 
             padding: 50px; 
             border-radius: 15px; 
             box-shadow: 0 0 30px rgba(255,255,255,0.05);
-            max-width: 400px;
         }
-
-        h2 { margin-bottom: 20px; font-weight: 300; letter-spacing: 1px; }
 
         input { 
             padding: 15px; 
@@ -40,7 +35,6 @@
             font-size: 18px; 
             text-align: center; 
             margin-bottom: 20px;
-            outline: none;
         }
 
         button { 
@@ -51,12 +45,8 @@
             border-radius: 8px; 
             cursor: pointer; 
             font-weight: bold;
-            transition: background 0.3s;
         }
 
-        button:hover { background: #218838; }
-
-        /* Contenedor del Juego (Recorte de Logo) */
         #contenedor-juego { 
             display: none; 
             width: 100vw; 
@@ -67,17 +57,36 @@
 
         iframe { 
             width: 100%; 
-            height: calc(100% + 150px); /* Altura extra para permitir el desplazamiento */
+            height: calc(100% + 150px); 
             position: absolute; 
-            top: -115px; /* <--- ESTE NÚMERO TAPA EL LOGO. Ajusta si es necesario */
+            top: -115px; 
             left: 0; 
             border: none; 
         }
+
+        /* BOTÓN DE SALIDA RÁPIDA */
+        #btn-exit {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 9999; /* Para que esté siempre encima de todo */
+            padding: 8px 15px;
+            background: rgba(255, 0, 0, 0.5); /* Rojo semitransparente para que no llame mucho la atención */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 12px;
+            display: none; /* Solo se verá cuando entres al juego */
+        }
+        #btn-exit:hover { background: red; }
     </style>
 </head>
 <body>
 
-    <!-- Pantalla de Código -->
+    <!-- Botón de pánico -->
+    <button id="btn-exit" onclick="salirRapido()">EXIT</button>
+
     <div id="login">
         <h2>Identificación</h2>
         <input type="password" id="pass" placeholder="Introducir PIN">
@@ -85,43 +94,39 @@
         <button onclick="acceder()">CONTINUAR</button>
     </div>
 
-    <!-- Espacio del Juego -->
     <div id="contenedor-juego">
-        <iframe src="https://tinyfishingame.com"></iframe>
+        <iframe src="https://tinyfishingame.com/blumgi-ball/"></iframe>
     </div>
 
     <script>
-        function acceder() {
-            // 1. TUS CÓDIGOS (Cámbialos o añade más aquí)
-            var codigosValidos = ["SAM55", "SER", "SOS", "MOIN"]; 
-            
-            // 2. PÁGINAS A LAS QUE MANDA SI FALLAN (Al azar)
-            var websFalsas = [
-                "https://webuntis.com",
-                "https://office.com",
-                "https://google.com",
-                "https://conversaition.onrender.com",
-                "https://wikipedia.org" // Wiki aleatoria para despistar
-            ];
+        // Lista de webs para despistar
+        var websFalsas = [
+            "https://webuntis.com",
+            "https://office.com",
+            "https://google.com"
+        ];
 
+        function acceder() {
+            var codigosValidos = ["SAM55", "MOIN"]; // Pon tus códigos aquí
             var input = document.getElementById("pass").value;
 
             if (codigosValidos.includes(input)) {
-                // SI ACIERTA: Muestra el juego
                 document.getElementById("login").style.display = "none";
                 document.getElementById("contenedor-juego").style.display = "block";
+                document.getElementById("btn-exit").style.display = "block"; // Mostrar botón EXIT
             } else {
-                // SI FALLA: Lo manda a una web aburrida al azar
-                var azar = Math.floor(Math.random() * websFalsas.length);
-                window.location.href = websFalsas[azar];
+                window.location.href = websFalsas[0]; // Manda a WebUntis si falla
             }
         }
 
-        // Permite entrar pulsando la tecla "Enter"
+        function salirRapido() {
+            // Elige una web al azar de la lista y te manda allí inmediatamente
+            var azar = Math.floor(Math.random() * websFalsas.length);
+            window.location.href = websFalsas[azar];
+        }
+
         document.getElementById("pass").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                acceder();
-            }
+            if (event.key === "Enter") { acceder(); }
         });
     </script>
 </body>
